@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+   fx:controller="dambat.ProductController">
+   <TableView fx:id="tableProducts">
+      <columns>
+         <TableColumn fx:id="colName" text="Product" />
+         <TableColumn fx:id="colPrice" text="Price" />
+      </columns>
+   </TableView>
+</VBox>
