@@ -22,7 +22,7 @@
             <artifactId>javafx-fxml</artifactId>
             <version>19</version>
         </dependency>
-        <!-- JDBC (PostgreSQL/MySQL/other DB) -->
+        <!-- DBC (PoJstgreSQL/MySQL/other DB) -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>

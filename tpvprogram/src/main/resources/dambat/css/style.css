@@ -1,0 +1,5 @@
+.my-button {
+    -fx-background-color: blue;
+    margin: 9;
+    -fx-text-fill: white;
+}

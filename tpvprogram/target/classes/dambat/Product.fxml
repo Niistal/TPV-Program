@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-   fx:controller="dambat.ProductController">
-   <TableView fx:id="tableProducts">
-      <columns>
-         <TableColumn fx:id="colName" text="Product" />
-         <TableColumn fx:id="colPrice" text="Price" />
-      </columns>
-   </TableView>
-</VBox>
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="dambat.products.ProductsController">
+    <children>
+        
+        <Button text="Volver" layoutX="10" layoutY="10" onAction="#back" />
+
+        
+        <TableView fx:id="productstable" layoutY="50" prefWidth="600" prefHeight="400">
+            <columns>
+                <TableColumn fx:id="colIdProducto" text="ID Producto" prefWidth="150" />
+                <TableColumn fx:id="colNombre" text="Producto" prefWidth="200" />
+                <TableColumn fx:id="colPrecio" text="Precio" prefWidth="100" />
+                <TableColumn fx:id="colIdKategoria" text="ID Kategoria" prefWidth="100" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>
