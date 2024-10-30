@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="dambat.kategories.KategoriesControllerPrueba">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="dambat.controllers.kategories.KategoriesControllerPrueba">
     <children>
         <GridPane fx:id="kategoriesContainer" layoutX="50" layoutY="50" hgap="20" vgap="20">
             <padding>

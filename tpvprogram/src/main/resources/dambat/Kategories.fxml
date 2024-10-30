@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="dambat.kategories.KategoriesController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="dambat.controllers.kategories.KategoriesController">
     <children>
         <TableView fx:id="kategoriestable" layoutX="0.0" layoutY="0.0">
             <columns>

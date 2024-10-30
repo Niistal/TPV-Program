@@ -13,6 +13,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 public class KategoriesControllerPrueba {
@@ -29,6 +31,7 @@ public class KategoriesControllerPrueba {
 
     private void loadKategories() {
         try (Connection conn = DBConnection.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery("SELECT id_kategoria, kategoria_izena FROM kategoriak")) {
+
             int row = 0;
             int col = 0;
             while (rs.next()) {
@@ -38,6 +41,19 @@ public class KategoriesControllerPrueba {
                 Button kategoryButton = new Button(name);
                 kategoryButton.setId(String.valueOf(id));
                 kategoryButton.setPrefSize(300, 100);
+                try {
+                    String imagePath = "/images/" + name.toLowerCase() + ".jpg";
+                    Image image = new Image(getClass().getResourceAsStream(imagePath));
+                    ImageView imageView = new ImageView(image);
+
+                    imageView.setFitWidth(40);
+                    imageView.setFitHeight(40);
+
+                    kategoryButton.setGraphic(imageView);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage() + " la imagen no puede cargarse");
+                }
+
                 kategoryButton.setOnAction(event -> {
                     try {
                         switchToProducts(id);
@@ -49,12 +65,11 @@ public class KategoriesControllerPrueba {
                 kategoriesContainer.add(kategoryButton, col, row);
 
                 col++;
-                if (col == 3) { 
+                if (col == 3) {
                     col = 0;
                     row++;
                 }
             }
-            
 
         } catch (Exception e) {
             e.printStackTrace();
