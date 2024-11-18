@@ -17,7 +17,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("/dambat/Kategories.fxml"));
        // scene = new Scene(loadFXML("Kategories"), 0, 0);
-        scene = new Scene(loadFXML("KategoriesPrueba"), 0, 0);
+        scene = new Scene(loadFXML("Kategories"), 0, 0);
       
 
         stage.setScene(scene);

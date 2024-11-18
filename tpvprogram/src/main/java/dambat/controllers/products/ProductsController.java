@@ -11,25 +11,15 @@ import dambat.models.connections.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 
 public class ProductsController {
 
-    @FXML
     private static int categoryId;
 
     @FXML
-    private TableView<Product> productstable;
-    @FXML
-    private TableColumn<Product, Integer> colIdProducto;
-    @FXML
-    private TableColumn<Product, String> colNombre;
-    @FXML
-    private TableColumn<Product, Double> colPrecio;
-    @FXML
-    private TableColumn<Product, Integer> colIdKategoria;
+    private GridPane productsContainer;
 
     private ObservableList<Product> productsList = FXCollections.observableArrayList();
 
@@ -39,43 +29,83 @@ public class ProductsController {
 
     @FXML
     public void initialize() {
-
-        colIdProducto.setCellValueFactory(new PropertyValueFactory<>("id_prod"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-        colIdKategoria.setCellValueFactory(new PropertyValueFactory<>("idKategoria"));
-
         loadProducts();
     }
 
     private void loadProducts() {
         productsList.clear();
+
         String query = "SELECT id_produktua, produktua_izena, prezioa, id_kategoria FROM produktuak WHERE id_kategoria = " + categoryId;
 
-        try (Connection conn = DBConnection.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+        try (Connection conn = DBConnection.connect(); 
+        Statement stmt = conn.createStatement(); 
+        ResultSet rs = stmt.executeQuery(query)) {
+
+            int row = 0;
+            int col = 0;
 
             while (rs.next()) {
-                productsList.add(new Product(
-                        rs.getInt("id_produktua"),
-                        rs.getString("produktua_izena"),
-                        rs.getDouble("prezioa"),
-                        rs.getInt("id_kategoria")));
+                int productId = rs.getInt("id_produktua");
+                String name = rs.getString("produktua_izena");
+                double price = rs.getDouble("prezioa");
+                int categoryId = rs.getInt("id_kategoria");
+
+                Button productButton = new Button(/*  name + "\n \u20AC" + price + " \n" + "IDkategoria: " + categoryId*/);
+                productButton.setPrefSize(300, 100);
+               try {
+                   
+                String imagePath = getClass().getResource("/images/" + name.toLowerCase() + ".jpg").toExternalForm();
+
+                 productButton.setStyle("-fx-background-position: center center; "
+                        + "-fx-text-fill: white; "
+                        + "-fx-font-size: 18px; "
+                        + "-fx-padding: 10px;"
+                        + "-fx-border-color: grey;"
+                        + "-fx-background-color:darkslategray; "
+                        + "-fx-background-size: cover ; "
+                        + "-fx-background-image: url('" + imagePath + "');"
+                        + "-fx-font-weight: bolder;");
+                    } catch (Exception e) {
+                        productButton.setStyle("-fx-background-position: center center; "
+                        + "-fx-text-fill: white; "
+                        + "-fx-font-size: 18px; "
+                        + "-fx-padding: 10px;"
+                        + "-fx-border-color: grey;"
+                        + "-fx-background-color:darkslategray; "
+                        + "-fx-background-size: cover ; "
+                        
+                        + "-fx-font-weight: bolder;");
+                        System.out.println(e);
+                    }
+
+                productButton.setOnAction(event -> {
+                    //euroa importatuko da unikodearekin 
+                    System.out.println("produktua: " + name + " -"
+                            + //
+                            " \u20AC " + price);
+
+                });
+
+                productsContainer.add(productButton, col, row);
+
+                col++;
+                if (col == 3) {
+                    col = 0;
+                    row++;
+                }
             }
-            productstable.setItems(productsList);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @FXML
     private void back() {
         try {
-            Main.setRoot("Kategoriesprueba");
+            Main.setRoot("Kategories");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }
