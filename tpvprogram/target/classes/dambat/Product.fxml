@@ -1,25 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.GridPane?>
-<!-- <?import resources.dambat.css.style.css?>-->
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="dambat.controllers.products.ProductsController" style="-fx-background-color:lightblue; -fx-font-family: 'serif'">
-    <children>
-        
-        <Button text="Volver" layoutX="10" layoutY="10" onAction="#back" />
-        <GridPane fx:id="productsContainer" layoutX="40" layoutY="50" hgap="20" vgap="20">
-            <padding>
-                <Insets top="100" right="60" bottom="100" left="60"/>
-            </padding>
-        </GridPane>
-    </children>
-        
-      <!--   <TableView fx:id="productstable" layoutY="50" prefWidth="600" prefHeight="400">
+<!-- <?import resources.dambat.css.style.css?>-->
+
+<AnchorPane prefHeight="1208.0" prefWidth="1659.0"
+   style="-fx-background-color:lightblue; -fx-font-family: 'serif' padding: 400px"
+   xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1"
+   fx:controller="dambat.controllers.products.ProductsController">
+
+   <children>
+
+      <Button layoutX="10" layoutY="10" onAction="#back" prefHeight="43.0" prefWidth="111.0"
+         text="Volver">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <GridPane fx:id="productsContainer" hgap="20" layoutX="42.0" layoutY="61.0"
+         prefHeight="1066.0" prefWidth="1020.0" vgap="20">
+         <padding>
+            <Insets bottom="100" left="60" right="60" top="100" />
+         </padding>
+      </GridPane>
+      <TextField fx:id="eragiketa" layoutX="1065.0" layoutY="54.0" prefHeight="116.0" prefWidth="454.0">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </TextField>
+      <GridPane layoutX="1070.0" layoutY="197.0" prefHeight="578.0" prefWidth="451.0">
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints maxHeight="131.19998779296876" minHeight="91.19998779296876"
+               prefHeight="119.9999755859375" />
+            <RowConstraints maxHeight="154.40001220703124" minHeight="110.4" prefHeight="110.4" />
+            <RowConstraints maxHeight="126.40000000000003" minHeight="110.39999999999998"
+               prefHeight="114.19999999999999" />
+            <RowConstraints maxHeight="131.19998779296873" minHeight="112.79997558593755"
+               prefHeight="119.20000000000005" />
+            <RowConstraints maxHeight="12.7999267578125" minHeight="9.5999755859375"
+               prefHeight="12.7999267578125" />
+         </rowConstraints>
+         <children>
+            <Button fx:id="5" mnemonicParsing="false" onAction="#five" prefHeight="118.0"
+               prefWidth="243.0" text="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Button>
+            <Button fx:id="2" mnemonicParsing="false" onAction="#two" prefHeight="118.0"
+               prefWidth="243.0" text="2" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Button>
+            <Button fx:id="6" mnemonicParsing="false" onAction="#six" prefHeight="118.0"
+               prefWidth="243.0" text="6" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Button>
+            <Button fx:id="7" mnemonicParsing="false" onAction="#seven" prefHeight="118.0"
+               prefWidth="243.0" text="7">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Button>
+            <Button fx:id="1" mnemonicParsing="false" onAction="#one" prefHeight="118.0"
+               prefWidth="243.0" text="1" GridPane.rowIndex="3">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Button>
+            <Button fx:id="4" mnemonicParsing="false" onAction="#four" prefHeight="118.0"
+               prefWidth="243.0" text="4" GridPane.rowIndex="2">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Button>
+            <Button fx:id="9" mnemonicParsing="false" onAction="#nine" prefHeight="118.0"
+               prefWidth="243.0" text="9" GridPane.columnIndex="2">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Button>
+            <Button fx:id="0" mnemonicParsing="false" onAction="#zero" prefHeight="118.0"
+               prefWidth="243.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Button>
+            <Button fx:id="Bider" mnemonicParsing="false" onAction="#bider" prefHeight="118.0"
+               prefWidth="243.0" text="X" GridPane.rowIndex="4">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Button>
+            <Button fx:id="Berdin" mnemonicParsing="false" onAction="#berdin" prefHeight="118.0"
+               prefWidth="243.0" text="=" GridPane.columnIndex="2" GridPane.rowIndex="4">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Button>
+            <Button fx:id="8" mnemonicParsing="false" onAction="#eight" prefHeight="118.0"
+               prefWidth="243.0" text="8" GridPane.columnIndex="1">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Button>
+            <Button fx:id="3" mnemonicParsing="false" onAction="#three" prefHeight="118.0"
+               prefWidth="243.0" text="3" GridPane.columnIndex="2" GridPane.rowIndex="3">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Button>
+            <Button fx:id="ezabatu" mnemonicParsing="false" onAction="#backspace" prefHeight="118.0"
+               prefWidth="243.0" GridPane.columnIndex="1" GridPane.rowIndex="5" text="⌫ ">
+               <font>
+                  <Font size="35.0" />
+               </font>
+               
+            </Button>
+         </children>
+      </GridPane>
+      <TextField fx:id="result" layoutX="1072.0" layoutY="777.0" prefHeight="166.0" prefWidth="455.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+
+
+   </children>
+
+
+   <!--   <TableView fx:id="productstable" layoutY="50" prefWidth="600" prefHeight="400">
             <columns>
                 <TableColumn fx:id="colIdProducto" text="ID Producto" prefWidth="150" />
                 <TableColumn fx:id="colNombre" text="Producto" prefWidth="200" />
@@ -27,5 +155,5 @@
                 <TableColumn fx:id="colIdKategoria" text="ID Kategoria" prefWidth="100" />
             </columns>
         </TableView> -->
-      
+
 </AnchorPane>
