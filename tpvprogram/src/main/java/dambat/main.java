@@ -1,7 +1,7 @@
 package dambat;
 
 import java.io.IOException;
-
+ 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,14 +16,15 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("/dambat/Kategories.fxml"));
-        scene = new Scene(loadFXML("Login"), 0, 0);
+        //scene = new Scene(loadFXML("Login"), 0, 0);
         //scene = new Scene(loadFXML("Signup"), 0, 0);
-       //scene = new Scene(loadFXML("Kategories"),0, 0);
+        scene = new Scene(loadFXML("Kategories"),0, 0);
         stage.setFullScreen(true);
 
         stage.setScene(scene);
         stage.show();
         stage.setTitle("TPV - KATEGORIES");
+        
     
     }
 

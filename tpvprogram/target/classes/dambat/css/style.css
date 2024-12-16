@@ -1,18 +1,1 @@
-.productButton{
-    -fx-background-position: center center; 
-    -fx-text-fill: white; 
-    -fx-font-size: 18px; 
-    -fx-padding: 10px;
-    -fx-border-color: grey;
-    -fx-background-color:darkslategray; 
-    -fx-background-size: cover ; 
-    -fx-background-image: url('   imagePath  ');
-    -fx-width: auto; 
-    -fx-height: auto;
-    -fx-font-weight: bolder;
 
-    /* -fx-min-width: 100px;
-    -fx-min-height: 100px;
-    -fx-max-width: 200px;
-    -fx-max-height: 200px; */
-}

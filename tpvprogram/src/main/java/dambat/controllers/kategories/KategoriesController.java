@@ -48,19 +48,11 @@ public class KategoriesController {
                             + "-fx-font-size: 18px; "
                             + "-fx-padding: 10px;"
                             + "-fx-border-color: grey;"
-                            + "-fx-background-color:darkslategray; "
                             + "-fx-background-size: cover ; "
                             + "-fx-background-image: url('" + imagePath + "');"
                             + "-fx-font-weight: bolder;");
 
-                    /*     Image image = new Image(getClass().getResourceAsStream(imagePath));
-                    ImageView imageView = new ImageView(image);
-
-                    imageView.setFitWidth(40);
-                    imageView.setFitHeight(40);
-
-                    kategoryButton.setGraphic(imageView);
-                     */
+                
                 } catch (Exception e) {
                     System.out.println(e.getMessage() + name + " la imagen no puede cargarse");
                 }
