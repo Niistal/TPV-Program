@@ -22,12 +22,12 @@ public class ProductsController {
 
     private static int guztira = 0;
     private static int categoryId;
-    private static int productId;
 
     @FXML
     private GridPane productsContainer;
     private ObservableList<String[]> orderDetails = FXCollections.observableArrayList();
     private ObservableList<String[]> orderedlist = FXCollections.observableArrayList();
+    public int id;
 
     private ObservableList<Product> productsList = FXCollections.observableArrayList();
     @FXML
@@ -66,6 +66,8 @@ public class ProductsController {
     @FXML
     public void initialize() {
         loadProducts();
+        loadResult();
+
     }
 
     private void loadProducts() {
@@ -79,7 +81,7 @@ public class ProductsController {
             int col = 0;
 
             while (rs.next()) {
-                productId = rs.getInt("id_produktua");
+                int productId = rs.getInt("id_produktua");
                 String name = rs.getString("produktua_izena");
                 double price = rs.getDouble("prezioa");
                 categoryId = rs.getInt("id_kategoria");
@@ -87,7 +89,6 @@ public class ProductsController {
                 Button productButton = new Button();
                 productButton.setPrefSize(300, 100);
                 try {
-
                     String imagePath = getClass().getResource("/images/" + name.toLowerCase() + ".jpg").toExternalForm();
 
                     productButton.setStyle("-fx-background-position: center center; "
@@ -107,11 +108,9 @@ public class ProductsController {
                 }
 
                 productButton.setOnAction(event -> {
-                    //euroa importatuko da unikodearekin 
-
-                    System.out.println("produktua: " + name + " -" + "\n \t\t\t \u20AC " + price);
-                    eragiketa.setText(eragiketa.getText() + name + " , " + price + " "/*+  /"\n\t\t\u20AC\t"*/);
-
+                    id = productId;
+                    System.out.println("produktua: " + name + " -" + "\n \t\t\t \u20AC " + price + " " + productId);
+                    eragiketa.setText(eragiketa.getText() + name + " , " + price);
                 });
 
                 productsContainer.add(productButton, col, row);
@@ -121,20 +120,9 @@ public class ProductsController {
                     col = 0;
                     row++;
                 }
-
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @FXML
-    private void back() {
-        try {
-            Main.setRoot("Kategories");
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -142,7 +130,6 @@ public class ProductsController {
     @FXML
     private void one() {
         eragiketa.setText(eragiketa.getText() + "1");
-
     }
 
     @FXML
@@ -192,9 +179,7 @@ public class ProductsController {
 
     @FXML
     private void bider() {
-
         eragiketa.setText(eragiketa.getText() + "X");
-
     }
 
     @FXML
@@ -207,9 +192,8 @@ public class ProductsController {
     }
 
     @FXML
-    private void berdin() {
+    private void berdin() throws SQLException {
         if (eragiketa.getText().contains("X")) {
-
             String eragiketaString = eragiketa.getText().split(",")[1];
             System.out.println(eragiketaString);
             String precio = eragiketaString.split("X")[0];
@@ -218,35 +202,22 @@ public class ProductsController {
             int cantidadInt = Integer.valueOf(cantidad);
             double results = precioInt * cantidadInt;
 
-
-            
             guztira += results;
 
             orderedlist.add(new String[]{String.valueOf(eragiketa.getText().replace(String.valueOf("X"), String.valueOf('*')) + " = " + results + "\n")});
-            result.clear();
-            result.appendText("Total: " + guztira + "€\n");
+            StringBuilder newResult = new StringBuilder();
             for (String[] eragiketalist : orderedlist) {
-                result.appendText(eragiketalist[0]);
+                newResult.append(eragiketalist[0]);
             }
-            if (!(eragiketa.getText().equals(null))) {
-                
-                eragiketa.clear();
-            } else {
-                System.out.println(" the text is null");
-            }
-            
-            orderDetails.add(new String[]{String.valueOf(productId), String.valueOf(cantidadInt), String.valueOf(results)});
-        }
-        /* 
-        if (!(eragiketa.getText().equals(null))) {
-            result.appendText(eragiketa.getText() + "€ ");
-            result.appendText("\n");
+
+            newResult.append("Total: ").append(guztira).append("€\n");
+
+            result.setText(newResult.toString());
 
             eragiketa.clear();
-        } else {
-            System.out.println(" the text is null");
-        }*/
 
+            orderDetails.add(new String[]{String.valueOf(id), String.valueOf(cantidadInt), String.valueOf(results)});
+        }
     }
 
     @FXML
@@ -257,21 +228,41 @@ public class ProductsController {
         }
 
         try (Connection conn = DBConnection.connect()) {
-            String query = "INSERT INTO eskaera_xehetasunak (id_produktua, kantitatea, azpitotala) VALUES (?, ?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            conn.setAutoCommit(false);
 
-            for (String[] list : orderDetails) {
-                stmt.setInt(1, Integer.parseInt(list[0]));
-                stmt.setInt(2, Integer.parseInt(list[1]));
-                stmt.setDouble(3, Double.parseDouble(list[2]));
-                stmt.addBatch();
+            String insertOrderQuery = "INSERT INTO eskaerak (eskaera_data, guztira) VALUES (CURRENT_TIMESTAMP, ?)";
+            PreparedStatement insertOrderStmt = conn.prepareStatement(insertOrderQuery, Statement.RETURN_GENERATED_KEYS);
+            insertOrderStmt.setDouble(1, guztira);
+            insertOrderStmt.executeUpdate();
+
+            ResultSet rs = insertOrderStmt.getGeneratedKeys();
+            int idEskaera = 0;
+            if (rs.next()) {
+                idEskaera = rs.getInt(1);
+            } else {
+                throw new SQLException("No se pudo obtener el id_eskaera.");
             }
 
-            stmt.executeBatch();
+            String insertDetailsQuery = "INSERT INTO eskaera_xehetasunak (id_eskaera, id_produktua, kantitatea, azpitotala) VALUES (?, ?, ?, ?)";
+            PreparedStatement insertDetailsStmt = conn.prepareStatement(insertDetailsQuery);
+
+            for (String[] list : orderDetails) {
+                insertDetailsStmt.setInt(1, idEskaera);
+                insertDetailsStmt.setInt(2, Integer.parseInt(list[0]));
+                insertDetailsStmt.setInt(3, Integer.parseInt(list[1]));
+                insertDetailsStmt.setDouble(4, Double.parseDouble(list[2]));
+                insertDetailsStmt.addBatch();
+            }
+
+            insertDetailsStmt.executeBatch();
+            conn.commit();
+
             orderDetails.clear();
+            orderDetails.removeAll(orderDetails);
             result.clear();
             result.setText("Pedido enviado exitosamente. Total: " + guztira + "€\n");
             guztira = 0;
+
         } catch (SQLException ex) {
             System.err.println("Error al enviar los datos: " + ex.getMessage());
         }
@@ -280,11 +271,53 @@ public class ProductsController {
     @FXML
     private void clear1() {
         eragiketa.clear();
+        guztira = 0;
     }
 
     @FXML
     private void clear2() {
+        ProductSelectSave.saveResultToFile("result.txt", "");
         result.clear();
+        orderDetails.clear();
     }
 
+    /**
+     * Guardar el contenido actual del TextArea en el archivo `result.txt`.
+     */
+    private void saveResult() {
+        ProductSelectSave.saveResultToFile("data/result.txt", result.getText());
+    }
+
+    /**
+     * Cargar el contenido existente del archivo `result.txt` al TextArea.
+     */
+    private void loadResult() {
+        String content = ProductSelectSave.loadResultFromFile("data/result.txt");
+        if (content != null && !content.isEmpty()) {
+            result.setText(content); // Establece el contenido en el TextArea
+        }
+    }
+
+    /**
+     * Limpia el contenido del TextArea y del archivo asociado.
+     */
+    @FXML
+    private void clearResult() {
+        result.clear();
+        ProductSelectSave.saveResultToFile("data/result.txt", ""); // Borra también el archivo
+    }
+
+    /**
+     * Botón "Volver" para regresar a la escena de categorías. Guarda el
+     * contenido actual antes de salir.
+     */
+    @FXML
+    private void back() {
+        saveResult(); // Guardar contenido antes de cambiar de escena
+        try {
+            Main.setRoot("Kategories");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
