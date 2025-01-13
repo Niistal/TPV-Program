@@ -25,7 +25,7 @@ public class ProductSelectSave {
         }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write(content);
+            writer.append(content);
             System.out.println("Guardado correctamente en: " + file.getAbsolutePath());
         } catch (IOException e) {
             System.err.println("Error al guardar el archivo: " + e.getMessage());
@@ -55,7 +55,7 @@ public class ProductSelectSave {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                content.append(line).append("\n");
+                content.append(line +"\n");
             }
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());

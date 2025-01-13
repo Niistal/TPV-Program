@@ -1,6 +1,10 @@
 package dambat.controllers.products;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -58,6 +62,8 @@ public class ProductsController {
     private TextField eragiketa;
     @FXML
     private TextArea result;
+    @FXML
+    private TextArea total;
 
     public static void setCategoryId(int id) {
         categoryId = id;
@@ -191,37 +197,57 @@ public class ProductsController {
         this.eragiketa.setText(eragiketa);
     }
 
+    
     @FXML
-    private void berdin() throws SQLException {
+    private void berdin() throws SQLException, IOException {
         if (eragiketa.getText().contains("X")) {
             String eragiketaString = eragiketa.getText().split(",")[1];
-            System.out.println(eragiketaString);
-            String precio = eragiketaString.split("X")[0];
-            String cantidad = eragiketaString.split("X")[1];
-            double precioInt = Double.valueOf(precio);
-            int cantidadInt = Integer.valueOf(cantidad);
+            String precio = eragiketaString.split("X")[0].trim();
+            String cantidad = eragiketaString.split("X")[1].trim();
+            double precioInt = Double.parseDouble(precio);
+            int cantidadInt = Integer.parseInt(cantidad);
+            
             double results = precioInt * cantidadInt;
-
             guztira += results;
-
-            orderedlist.add(new String[]{String.valueOf(eragiketa.getText().replace(String.valueOf("X"), String.valueOf('*')) + " = " + results + "\n")});
-            StringBuilder newResult = new StringBuilder();
-            for (String[] eragiketalist : orderedlist) {
-                newResult.append(eragiketalist[0]);
+            
+            String newEntry = eragiketa.getText().replace("X", "*") + " = " + results;
+            
+            // Leer contenido del archivo y comparar
+            File file = new File("data/result.txt");
+            if (!file.exists()) {
+                file.createNewFile(); // Crear archivo si no existe
             }
-
-            newResult.append("Total: ").append(guztira).append("€\n");
-
-            result.setText(newResult.toString());
-
+            
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            boolean isDuplicate = false; // Verificar si el producto ya existe
+            StringBuilder fileContent = new StringBuilder();
+            
+            while ((line = reader.readLine()) != null) {
+                fileContent.append(line).append("\n");
+                if (line.trim().equals(newEntry.trim())) {
+                    isDuplicate = true; // Producto ya existe en el archivo
+                }
+            }
+            reader.close();
+            
+            if (!isDuplicate) {
+                orderedlist.add(new String[]{newEntry + "\n"});
+                result.appendText(newEntry + "\n");
+            }
+            
+            total.setText("Total: " + guztira + "€");
+            
+            ProductSelectSave.saveResultToFile("data/result.txt", result.getText());
+            
             eragiketa.clear();
-
+            
             orderDetails.add(new String[]{String.valueOf(id), String.valueOf(cantidadInt), String.valueOf(results)});
         }
     }
-
+    
     @FXML
-    private void send() {
+    private void send() throws SQLException {
         if (orderDetails.isEmpty()) {
             System.out.println("No hay datos para enviar.");
             return;
@@ -256,10 +282,11 @@ public class ProductsController {
 
             insertDetailsStmt.executeBatch();
             conn.commit();
-
+            generatePDF();
+            result.clear();
             orderDetails.clear();
             orderDetails.removeAll(orderDetails);
-            result.clear();
+
             result.setText("Pedido enviado exitosamente. Total: " + guztira + "€\n");
             guztira = 0;
 
@@ -267,25 +294,29 @@ public class ProductsController {
             System.err.println("Error al enviar los datos: " + ex.getMessage());
         }
     }
-
     @FXML
     private void clear1() {
+
         eragiketa.clear();
         guztira = 0;
     }
 
     @FXML
     private void clear2() {
+        ProductSelectSave.saveResultToFile("total.txt", "");
         ProductSelectSave.saveResultToFile("result.txt", "");
+        total.clear();
         result.clear();
         orderDetails.clear();
     }
 
     /**
-     * Guardar el contenido actual del TextArea en el archivo `result.txt`.
+     * Guardar el contenido actual del TextArea en el archivo `result.txt` y
+     * `total.txt`.
      */
     private void saveResult() {
         ProductSelectSave.saveResultToFile("data/result.txt", result.getText());
+        ProductSelectSave.saveResultToFile("data/total.txt", total.getText());
     }
 
     /**
@@ -293,8 +324,13 @@ public class ProductsController {
      */
     private void loadResult() {
         String content = ProductSelectSave.loadResultFromFile("data/result.txt");
+        String contentt = ProductSelectSave.loadResultFromFile("data/total.txt");
+
         if (content != null && !content.isEmpty()) {
-            result.setText(content); // Establece el contenido en el TextArea
+            result.appendText(content); // Establece el contenido en el TextArea
+        }
+        if (contentt != null && !contentt.isEmpty()) {
+            total.setText(contentt); // Establece el contenido en el TextArea
         }
     }
 
@@ -304,7 +340,10 @@ public class ProductsController {
     @FXML
     private void clearResult() {
         result.clear();
-        ProductSelectSave.saveResultToFile("data/result.txt", ""); // Borra también el archivo
+        total.clear();
+        ProductSelectSave.saveResultToFile("data/result.txt", "");
+        ProductSelectSave.saveResultToFile("data/total.txt", "");
+
     }
 
     /**
@@ -320,4 +359,46 @@ public class ProductsController {
             e.printStackTrace();
         }
     }
+
+    private void generatePDF() {
+        String pdfPath = "Pedido.pdf"; // Ruta del archivo PDF
+
+        try (PrintWriter writer = new PrintWriter(pdfPath, "UTF-8")) {
+
+           
+            writer.println("Resumen del Pedido");
+            writer.println("==================");
+            writer.println();
+
+        
+            writer.println("Detalle de Productos:");
+
+            writer.println(result.getText());
+            writer.println();
+
+            // Calcular el IVA y subtotal
+            double iva = guztira * 0.21; // IVA del 21%
+            double subtotal = guztira - iva;
+
+            writer.println("Resumen del Total:");
+            writer.printf("Subtotal (sin IVA): %.2f €%n", subtotal);
+            writer.printf("IVA (21%%): %.2f €%n", iva); // Escapar el símbolo '%'
+            writer.printf("Total (con IVA): %.2f €%n", (double) guztira);
+
+            writer.println();
+            writer.println("Gracias por su compra.");
+
+            System.out.println("PDF generado correctamente: " + pdfPath);
+
+            // Abrir automáticamente el PDF generado (opcional)
+            File pdfFile = new File(pdfPath);
+            if (pdfFile.exists()) {
+                java.awt.Desktop.getDesktop().open(pdfFile);
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error al generar el PDF: " + e.getMessage());
+        }
+    }
+
 }

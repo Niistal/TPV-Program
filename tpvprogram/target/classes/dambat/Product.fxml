@@ -22,7 +22,7 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <GridPane fx:id="productsContainer" hgap="20" layoutX="5.0" layoutY="61.0" prefHeight="666.0" prefWidth="1058.0" vgap="20">
+      <GridPane fx:id="productsContainer" hgap="20" layoutX="2.0" layoutY="97.0" prefHeight="666.0" prefWidth="1058.0" vgap="20">
          <padding>
             <Insets bottom="100" left="60" right="60" top="100" />
          </padding>
@@ -121,12 +121,12 @@
             </Button>
          </children>
       </GridPane>
-      <TextArea fx:id="result" editable="true" layoutX="1072.0" layoutY="777.0" prefColumnCount="1" prefHeight="166.0" prefRowCount="8" prefWidth="455.0">
+      <TextArea fx:id="result" editable="true" layoutX="1072.0" layoutY="774.0" prefColumnCount="1" prefHeight="107.0" prefRowCount="8" prefWidth="455.0">
          <font>
             <Font size="20.0" />
          </font>
       </TextArea>
-      <Button layoutX="857.0" layoutY="778.0" onAction="#send" prefHeight="58.0" prefWidth="138.0" text="Send">
+      <Button layoutX="857.0" layoutY="778.0" onAction="#send" prefHeight="58.0" prefWidth="138.0" text="Print">
          <font>
             <Font size="20.0" />
          </font>
@@ -141,6 +141,11 @@
             <Font size="50.0" />
          </font>
       </Label>
+      <TextArea fx:id="total" editable="true" layoutX="1072.0" layoutY="882.0" prefColumnCount="1" prefHeight="63.0" prefRowCount="8" prefWidth="455.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextArea>
 
 
    </children>

@@ -21,6 +21,7 @@ public class Main extends Application {
         scene = new Scene(loadFXML("Kategories"), 0, 0);
         stage.setFullScreen(true);
         ProductSelectSave.saveResultToFile("data/result.txt", "");
+        ProductSelectSave.saveResultToFile("data/total.txt", "");
         stage.setFullScreen(true);
         stage.setScene(scene);
         stage.show();

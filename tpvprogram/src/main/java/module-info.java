@@ -5,7 +5,7 @@ module dambat {
     requires java.sql;
     requires org.postgresql.jdbc;
     requires javafx.graphics;
-    
+    requires java.desktop;
 
     opens dambat to javafx.fxml;
     opens dambat.controllers.kategories to javafx.fxml;
@@ -17,4 +17,5 @@ module dambat {
     exports dambat.models;
     exports dambat.controllers.products;
     exports dambat.controllers.logSign;
+
 }
