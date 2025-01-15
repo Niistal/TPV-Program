@@ -15,10 +15,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        //Parent root = FXMLLoader.load(getClass().getResource("/dambat/Kategories.fxml"));
-        //scene = new Scene(loadFXML("Login"), 0, 0);
-        //scene = new Scene(loadFXML("Signup"), 0, 0);
-        scene = new Scene(loadFXML("Kategories"), 0, 0);
+        
+        scene = new Scene(loadFXML("Login"), 0, 0);
+        
+        //scene = new Scene(loadFXML("Kategories"), 0, 0);
         stage.setFullScreen(true);
         ProductSelectSave.saveResultToFile("data/result.txt", "");
         ProductSelectSave.saveResultToFile("data/total.txt", "");
