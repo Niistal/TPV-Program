@@ -2,6 +2,8 @@ package dambat.controllers.products;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,6 +12,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import dambat.Main;
 import dambat.models.Product;
@@ -197,7 +208,6 @@ public class ProductsController {
         this.eragiketa.setText(eragiketa);
     }
 
-    
     @FXML
     private void berdin() throws SQLException, IOException {
         if (eragiketa.getText().contains("X")) {
@@ -206,23 +216,23 @@ public class ProductsController {
             String cantidad = eragiketaString.split("X")[1].trim();
             double precioInt = Double.parseDouble(precio);
             int cantidadInt = Integer.parseInt(cantidad);
-            
+
             double results = precioInt * cantidadInt;
             guztira += results;
-            
+
             String newEntry = eragiketa.getText().replace("X", "*") + " = " + results;
-            
+
             // Leer contenido del archivo y comparar
             File file = new File("data/result.txt");
             if (!file.exists()) {
                 file.createNewFile(); // Crear archivo si no existe
             }
-            
+
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
             boolean isDuplicate = false; // Verificar si el producto ya existe
             StringBuilder fileContent = new StringBuilder();
-            
+
             while ((line = reader.readLine()) != null) {
                 fileContent.append(line).append("\n");
                 if (line.trim().equals(newEntry.trim())) {
@@ -230,24 +240,24 @@ public class ProductsController {
                 }
             }
             reader.close();
-            
+
             if (!isDuplicate) {
                 orderedlist.add(new String[]{newEntry + "\n"});
                 result.appendText(newEntry + "\n");
             }
-            
+
             total.setText("Total: " + guztira + "€");
-            
+
             ProductSelectSave.saveResultToFile("data/result.txt", result.getText());
-            
+
             eragiketa.clear();
-            
+
             orderDetails.add(new String[]{String.valueOf(id), String.valueOf(cantidadInt), String.valueOf(results)});
         }
     }
-    
+
     @FXML
-    private void send() throws SQLException {
+    private void send() throws SQLException, FileNotFoundException, DocumentException {
         if (orderDetails.isEmpty()) {
             System.out.println("No hay datos para enviar.");
             return;
@@ -282,7 +292,9 @@ public class ProductsController {
 
             insertDetailsStmt.executeBatch();
             conn.commit();
+
             generatePDF();
+
             result.clear();
             orderDetails.clear();
             orderDetails.removeAll(orderDetails);
@@ -294,6 +306,7 @@ public class ProductsController {
             System.err.println("Error al enviar los datos: " + ex.getMessage());
         }
     }
+
     @FXML
     private void clear1() {
 
@@ -360,36 +373,50 @@ public class ProductsController {
         }
     }
 
-    private void generatePDF() {
+    private void generatePDF() throws FileNotFoundException, DocumentException {
+
         String pdfPath = "Pedido.pdf"; // Ruta del archivo PDF
+        Document document = new Document();
+
+        PdfWriter.getInstance(document, new FileOutputStream("pedido.pdf"));
+
+        document.open();
 
         try (PrintWriter writer = new PrintWriter(pdfPath, "UTF-8")) {
-
-           
-            writer.println("Resumen del Pedido");
-            writer.println("==================");
-            writer.println();
-
-        
-            writer.println("Detalle de Productos:");
-
-            writer.println(result.getText());
-            writer.println();
 
             // Calcular el IVA y subtotal
             double iva = guztira * 0.21; // IVA del 21%
             double subtotal = guztira - iva;
 
-            writer.println("Resumen del Total:");
-            writer.printf("Subtotal (sin IVA): %.2f €%n", subtotal);
-            writer.printf("IVA (21%%): %.2f €%n", iva); // Escapar el símbolo '%'
-            writer.printf("Total (con IVA): %.2f €%n", (double) guztira);
-
-            writer.println();
-            writer.println("Gracias por su compra.");
-
+            //escribir en el pdf
             System.out.println("PDF generado correctamente: " + pdfPath);
+            Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+            Font boldFont = FontFactory.getFont(FontFactory.COURIER, 16, Font.BOLD, BaseColor.BLACK);
+            Font boldFont2 = FontFactory.getFont(FontFactory.COURIER, 20, Font.BOLD, BaseColor.BLACK);
 
+            Chunk chunk = new Chunk("Resumen del Pedido", boldFont);
+            Chunk chunk0 = new Chunk("==================", font);
+
+            Chunk chunk1 = new Chunk("Detalle de Productos:", font);
+            //Chunk chunk2 = new Chunk("Resumen del Total:\n\n", boldFont);
+            String content = result.getText();
+            document.add(new Paragraph(chunk));
+            document.add(new Paragraph(chunk0));
+            document.add(new Paragraph(chunk1));
+            document.add(new Paragraph("Resumen del Total:\n", boldFont));
+            document.add(new Paragraph( content +"\n", font));
+
+            Chunk chunk3 = new Chunk(String.format("Subtotal (sin IVA): %.2f €\n", subtotal),boldFont);
+            Chunk chunk4 = new Chunk(String.format("IVA (21%%): %.2f €\n", iva), font);
+            Chunk chunk5 = new Chunk(String.format("Total (con IVA): %.2f €\n", (double) guztira), boldFont2);
+            Chunk chunk6 = new Chunk("Gracias por su compra. en Nistaldrinks", font);
+
+          
+            document.add(chunk3);
+            document.add(chunk4);
+            document.add(chunk5);
+            document.add(chunk6);
+            document.close();
             // Abrir automáticamente el PDF generado (opcional)
             File pdfFile = new File(pdfPath);
             if (pdfFile.exists()) {
