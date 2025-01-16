@@ -7,7 +7,7 @@ Hau IKER NISTAL-ek egindako TPV (Terminal Puntua) programaren asignaturarako pro
 TPV-Program JavaFX erabiliz garatutako aplikazio bat da, produktuak kudeatzeko eta eskaerak egiteko. Aplikazio honek produktuak erakusten ditu, eskaerak egiten ditu eta PDF formatuan txostenak sortzen ditu.
 
 ##  Demo-Video
-
+![demo](images/demo.gif)
 ## Klase Diagrama
 
 
