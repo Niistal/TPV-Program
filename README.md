@@ -43,19 +43,19 @@ PostgreSQL datu-basearekin konexioa ezartzeko informazio gehiago lortzeko, ikus 
 
 - **Login.fxml**: Erabiltzaileak aplikaziora sartzeko login pantaila.
   
-  ![Login](/src/main/resources/images/logscr.jpg)
+  ![Login](images/logscr.jpg)
   
 - **Signup.fxml**: Erabiltzaile berriak erregistratzeko pantaila.
     
-  ![SignUp](/src/main/resources/images/signscr.jpg)
+  ![SignUp](images/signscr.jpg)
   
 - **Kategories.fxml**: Kategorien hautaketa pantaila. Kategoriak erakusten ditu eta erabiltzaileak kategoria bat hautatzeko aukera ematen du.
   
-  ![Kategories](/src/main/resources/images/kategories.jpg)
+  ![Kategories](images/kategories.jpg)
 
 - **Product.fxml**: Produktuen hautaketa pantaila. Produktuak erakusten ditu eta erabiltzaileak produktuak hautatzeko eta kantitatea sartzeko aukera ematen du.
 
-  ![Products](/src/main/resources/images/products.jpg)
+  ![Products](images/products.jpg)
 
 ## Garapena
 
