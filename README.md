@@ -13,6 +13,7 @@ TPV-Program JavaFX erabiliz garatutako aplikazio bat da, produktuak kudeatzeko e
 https://drive.google.com/file/d/1qxSF_0izchXCC0Q1aREdGHkG9X2G4I9Y/view?usp=sharing
 
 ## Klase Diagrama
+proiektua nola dudan banatuta UML diagrama.
 
 ![diag2](images/tpvjavadiag2.jpg)
 
@@ -34,6 +35,7 @@ https://drive.google.com/file/d/1qxSF_0izchXCC0Q1aREdGHkG9X2G4I9Y/view?usp=shari
 
 
  ![Login](images/TpvDb.png)
+
 ## Datu-basearekin Konexioa
 
 Datu-basearekin konexioa egiteko, `DBConnection.java` fitxategia erabiltzen da. PostgreSQL datu-basearekin konexioa ezartzen du honako URL, erabiltzaile eta pasahitzarekin:
