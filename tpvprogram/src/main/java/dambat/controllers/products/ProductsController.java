@@ -33,42 +33,41 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
+/**
+ * Controller for handling product-related operations in the application.
+ * Manages product loading, user interactions, order calculations, and PDF
+ * generation. This class interacts with the database and UI elements defined in
+ * the FXML file.
+ *
+ * Dependencies: - Database connection (DBConnection) - PDF generation library
+ * (iText) - JavaFX components for UI interactions
+ */
 public class ProductsController {
 
+    /**
+     * Total amount of the current order.
+     */
     private static int guztira = 0;
+    /**
+     * The current category ID used for filtering products.
+     */
     private static int categoryId;
 
     @FXML
-    private GridPane productsContainer;
-    private ObservableList<String[]> orderDetails = FXCollections.observableArrayList();
-    private ObservableList<String[]> orderedlist = FXCollections.observableArrayList();
+    private GridPane productsContainer; // Container for displaying product buttons.
+
+    private ObservableList<String[]> orderDetails = FXCollections.observableArrayList();  // Order details list.
+    private ObservableList<String[]> orderedlist = FXCollections.observableArrayList(); // Ordered list for display.
+    /**
+     * Stores the ID of the currently selected product.
+     */
     public int id;
 
-    private ObservableList<Product> productsList = FXCollections.observableArrayList();
+    private ObservableList<Product> productsList = FXCollections.observableArrayList();// List of products.
+
+    // UI Elements for user interaction.
     @FXML
-    private Button one;
-    @FXML
-    private Button two;
-    @FXML
-    private Button three;
-    @FXML
-    private Button four;
-    @FXML
-    private Button five;
-    @FXML
-    private Button six;
-    @FXML
-    private Button seven;
-    @FXML
-    private Button eight;
-    @FXML
-    private Button nine;
-    @FXML
-    private Button cero;
-    @FXML
-    private Button berdin;
-    @FXML
-    private Button bider;
+    private Button one, two, three, four, five, six, seven, eight, nine, cero, berdin, bider;
     @FXML
     private TextField eragiketa;
     @FXML
@@ -76,10 +75,19 @@ public class ProductsController {
     @FXML
     private TextArea total;
 
+    /**
+     * Sets the category ID for filtering products.
+     *
+     * @param id the category ID to be set
+     */
     public static void setCategoryId(int id) {
         categoryId = id;
     }
 
+    /**
+     * Initializes the controller after the root element has been processed.
+     * Loads products and previous results into the UI.
+     */
     @FXML
     public void initialize() {
         loadProducts();
@@ -87,6 +95,10 @@ public class ProductsController {
 
     }
 
+    /**
+     * Loads products from the database based on the selected category and
+     * displays them in the UI.
+     */
     private void loadProducts() {
         productsList.clear();
 
@@ -144,6 +156,9 @@ public class ProductsController {
         }
     }
 
+    /**
+     * Appends the numbers 0-9 to the operation text field.
+     */
     @FXML
     private void one() {
         eragiketa.setText(eragiketa.getText() + "1");
@@ -194,20 +209,35 @@ public class ProductsController {
         eragiketa.setText(eragiketa.getText() + "0");
     }
 
+    /**
+     * Appends the multiplication symbol to the operation text field.
+     */
     @FXML
     private void bider() {
         eragiketa.setText(eragiketa.getText() + "X");
     }
 
+    /**
+     * Removes the last character from the operation text field.
+     */
     @FXML
     private void backspace() {
         eragiketa.setText(eragiketa.getText().substring(0, eragiketa.getText().length() - 1));
     }
 
+    /**
+     * Sets the content of the operation text field.
+     *
+     * @param eragiketa the text to set
+     */
     public void setEragiketa(String eragiketa) {
         this.eragiketa.setText(eragiketa);
     }
 
+    /**
+     * Performs the calculation based on the operation entered by the user,
+     * updates the result, and saves it to the file.
+     */
     @FXML
     private void berdin() throws SQLException, IOException {
         if (eragiketa.getText().contains("X")) {
@@ -256,6 +286,9 @@ public class ProductsController {
         }
     }
 
+    /**
+     * Sends the order details to the database and generates a PDF summary.
+     */
     @FXML
     private void send() throws SQLException, FileNotFoundException, DocumentException {
         if (orderDetails.isEmpty()) {
@@ -307,6 +340,9 @@ public class ProductsController {
         }
     }
 
+    /**
+     * Clears the operation text field and resets the total amount.
+     */
     @FXML
     private void clear1() {
 
@@ -314,6 +350,9 @@ public class ProductsController {
         guztira = 0;
     }
 
+    /**
+     * Clears all order-related data and resets UI components.
+     */
     @FXML
     private void clear2() {
         ProductSelectSave.saveResultToFile("total.txt", "");
@@ -324,8 +363,7 @@ public class ProductsController {
     }
 
     /**
-     * Guardar el contenido actual del TextArea en el archivo `result.txt` y
-     * `total.txt`.
+     * Saves the current result and total to files.
      */
     private void saveResult() {
         ProductSelectSave.saveResultToFile("data/result.txt", result.getText());
@@ -333,7 +371,7 @@ public class ProductsController {
     }
 
     /**
-     * Cargar el contenido existente del archivo `result.txt` al TextArea.
+     * Loads the result and total from files and populates the UI.
      */
     private void loadResult() {
         String content = ProductSelectSave.loadResultFromFile("data/result.txt");
@@ -348,7 +386,7 @@ public class ProductsController {
     }
 
     /**
-     * Limpia el contenido del TextArea y del archivo asociado.
+     * Clears the result text area and associated file content.
      */
     @FXML
     private void clearResult() {
@@ -360,8 +398,7 @@ public class ProductsController {
     }
 
     /**
-     * Botón "Volver" para regresar a la escena de categorías. Guarda el
-     * contenido actual antes de salir.
+     * Saves the current result and navigates back to the categories scene.
      */
     @FXML
     private void back() {
@@ -373,6 +410,9 @@ public class ProductsController {
         }
     }
 
+    /**
+     * Generates a PDF summary of the current order and opens it automatically.
+     */
     private void generatePDF() throws FileNotFoundException, DocumentException {
 
         String pdfPath = "Pedido.pdf"; // Ruta del archivo PDF
@@ -398,25 +438,24 @@ public class ProductsController {
             Chunk chunk0 = new Chunk("==================", font);
 
             Chunk chunk1 = new Chunk("Detalle de Productos:", font);
-            //Chunk chunk2 = new Chunk("Resumen del Total:\n\n", boldFont);
             String content = result.getText();
             document.add(new Paragraph(chunk));
             document.add(new Paragraph(chunk0));
             document.add(new Paragraph(chunk1));
             document.add(new Paragraph("Resumen del Total:\n", boldFont));
-            document.add(new Paragraph( content +"\n", font));
+            document.add(new Paragraph(content + "\n", font));
 
-            Chunk chunk3 = new Chunk(String.format("Subtotal (sin IVA): %.2f €\n", subtotal),boldFont);
+            Chunk chunk3 = new Chunk(String.format("Subtotal (sin IVA): %.2f €\n", subtotal), boldFont);
             Chunk chunk4 = new Chunk(String.format("IVA (21%%): %.2f €\n", iva), font);
             Chunk chunk5 = new Chunk(String.format("Total (con IVA): %.2f €\n", (double) guztira), boldFont2);
             Chunk chunk6 = new Chunk("Gracias por su compra. en Nistaldrinks", font);
 
-          
             document.add(chunk3);
             document.add(chunk4);
             document.add(chunk5);
             document.add(chunk6);
             document.close();
+
             // Abrir automáticamente el PDF generado (opcional)
             File pdfFile = new File(pdfPath);
             if (pdfFile.exists()) {
