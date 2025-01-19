@@ -17,14 +17,12 @@ import javafx.scene.layout.GridPane;
 
 /**
  * Controller for handling the display and interaction with product categories.
- * This class retrieves category data from the database, displays it in a grid layout,
- * and enables navigation to the products page for a selected category.
- * 
- * Dependencies:
- * - Database connection (DBConnection)
- * - JavaFX components for UI interactions
- * - `ProductsController` for managing category selection
- * - `Main` for scene transitions
+ * This class retrieves category data from the database, displays it in a grid
+ * layout, and enables navigation to the products page for a selected category.
+ *
+ * Dependencies: - Database connection (DBConnection) - JavaFX components for UI
+ * interactions - `ProductsController` for managing category selection - `Main`
+ * for scene transitions
  */
 public class KategoriesController {
 
@@ -50,13 +48,12 @@ public class KategoriesController {
 
     /**
      * Loads categories from the database and creates buttons for each category.
-     * The buttons are styled with background images (if available) and added to the grid container.
-     * On button click, the application transitions to the products page for the selected category.
+     * The buttons are styled with background images (if available) and added to
+     * the grid container. On button click, the application transitions to the
+     * products page for the selected category.
      */
     private void loadKategories() {
-        try (Connection conn = DBConnection.connect(); 
-             Statement stmt = conn.createStatement(); 
-             ResultSet rs = stmt.executeQuery("SELECT id_kategoria, kategoria_izena FROM kategoriak")) {
+        try (Connection conn = DBConnection.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery("SELECT id_kategoria, kategoria_izena FROM kategoriak")) {
 
             int row = 0; // Row position in the grid.
             int col = 0; // Column position in the grid.
@@ -114,9 +111,10 @@ public class KategoriesController {
 
     /**
      * Switches to the products page for the selected category.
-     * 
+     *
      * @param id The ID of the selected category.
-     * @throws IOException if the FXML file for the products page cannot be loaded.
+     * @throws IOException if the FXML file for the products page cannot be
+     * loaded.
      */
     private void switchToProducts(int id) throws IOException {
         ProductsController.setCategoryId(id);

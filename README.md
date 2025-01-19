@@ -14,6 +14,12 @@ https://drive.google.com/file/d/1qxSF_0izchXCC0Q1aREdGHkG9X2G4I9Y/view?usp=shari
 
 ## Klase Diagrama
 
+![diag2](images/tpvjavadiag2.jpg)
+
+
+![diag](images/tpvjavadiag.jpg)
+
+
 
 ## Fitxategi Garrantzitsuak
 
