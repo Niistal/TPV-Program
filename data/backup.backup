@@ -1,0 +1,598 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.0
+-- Dumped by pg_dump version 17.0
+
+-- Started on 2025-01-20 18:02:05
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 222 (class 1259 OID 16663)
+-- Name: eskaera_xehetasunak; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.eskaera_xehetasunak (
+    id_xehetasuna integer NOT NULL,
+    id_eskaera integer,
+    id_produktua integer,
+    kantitatea integer NOT NULL,
+    azpitotala numeric(10,2) NOT NULL
+);
+
+
+ALTER TABLE public.eskaera_xehetasunak OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 16662)
+-- Name: eskaera_xehetasunak_id_xehetasuna_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.eskaera_xehetasunak_id_xehetasuna_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.eskaera_xehetasunak_id_xehetasuna_seq OWNER TO postgres;
+
+--
+-- TOC entry 4842 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: eskaera_xehetasunak_id_xehetasuna_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.eskaera_xehetasunak_id_xehetasuna_seq OWNED BY public.eskaera_xehetasunak.id_xehetasuna;
+
+
+--
+-- TOC entry 220 (class 1259 OID 16655)
+-- Name: eskaerak; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.eskaerak (
+    id_eskaera integer NOT NULL,
+    eskaera_data timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    guztira numeric(10,2) NOT NULL
+);
+
+
+ALTER TABLE public.eskaerak OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 16654)
+-- Name: eskaerak_id_eskaera_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.eskaerak_id_eskaera_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.eskaerak_id_eskaera_seq OWNER TO postgres;
+
+--
+-- TOC entry 4843 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: eskaerak_id_eskaera_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.eskaerak_id_eskaera_seq OWNED BY public.eskaerak.id_eskaera;
+
+
+--
+-- TOC entry 218 (class 1259 OID 16636)
+-- Name: kategoriak; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.kategoriak (
+    id_kategoria integer NOT NULL,
+    kategoria_izena character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.kategoriak OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 16635)
+-- Name: kategoriak_id_kategoria_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.kategoriak_id_kategoria_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.kategoriak_id_kategoria_seq OWNER TO postgres;
+
+--
+-- TOC entry 4844 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: kategoriak_id_kategoria_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.kategoriak_id_kategoria_seq OWNED BY public.kategoriak.id_kategoria;
+
+
+--
+-- TOC entry 224 (class 1259 OID 16728)
+-- Name: produktuak; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.produktuak (
+    id_produktua integer NOT NULL,
+    produktua_izena character varying(100) NOT NULL,
+    prezioa double precision NOT NULL,
+    id_kategoria integer
+);
+
+
+ALTER TABLE public.produktuak OWNER TO postgres;
+
+--
+-- TOC entry 223 (class 1259 OID 16727)
+-- Name: produktuak_id_produktua_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.produktuak_id_produktua_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.produktuak_id_produktua_seq OWNER TO postgres;
+
+--
+-- TOC entry 4845 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: produktuak_id_produktua_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.produktuak_id_produktua_seq OWNED BY public.produktuak.id_produktua;
+
+
+--
+-- TOC entry 226 (class 1259 OID 24769)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    username character varying(50) NOT NULL,
+    password character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- TOC entry 225 (class 1259 OID 24768)
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4846 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- TOC entry 4664 (class 2604 OID 16666)
+-- Name: eskaera_xehetasunak id_xehetasuna; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.eskaera_xehetasunak ALTER COLUMN id_xehetasuna SET DEFAULT nextval('public.eskaera_xehetasunak_id_xehetasuna_seq'::regclass);
+
+
+--
+-- TOC entry 4662 (class 2604 OID 16658)
+-- Name: eskaerak id_eskaera; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.eskaerak ALTER COLUMN id_eskaera SET DEFAULT nextval('public.eskaerak_id_eskaera_seq'::regclass);
+
+
+--
+-- TOC entry 4661 (class 2604 OID 16639)
+-- Name: kategoriak id_kategoria; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.kategoriak ALTER COLUMN id_kategoria SET DEFAULT nextval('public.kategoriak_id_kategoria_seq'::regclass);
+
+
+--
+-- TOC entry 4665 (class 2604 OID 16731)
+-- Name: produktuak id_produktua; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.produktuak ALTER COLUMN id_produktua SET DEFAULT nextval('public.produktuak_id_produktua_seq'::regclass);
+
+
+--
+-- TOC entry 4666 (class 2604 OID 24772)
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- TOC entry 4832 (class 0 OID 16663)
+-- Dependencies: 222
+-- Data for Name: eskaera_xehetasunak; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.eskaera_xehetasunak (id_xehetasuna, id_eskaera, id_produktua, kantitatea, azpitotala) FROM stdin;
+1	\N	32	2	12.00
+2	\N	32	6	30.00
+3	1	32	6	30.00
+4	1	32	3	18.00
+5	2	24	6	7.20
+6	2	24	8	12.80
+7	3	33	6	9.60
+8	3	33	8	12.80
+9	4	30	2	3.20
+10	4	30	3	4.50
+14	10	27	2	3.20
+15	10	29	6	9.00
+16	11	32	3	18.00
+17	12	1	3	6.00
+18	12	6	5	10.00
+19	13	8	3	7.50
+20	14	9	5	8.00
+21	15	9	5	8.00
+22	16	7	6	24.00
+23	17	32	2	12.00
+24	18	31	6	30.00
+25	18	32	3	18.00
+26	19	31	8	40.00
+27	20	32	3	18.00
+28	21	1	6	12.00
+29	21	3	6	12.00
+30	22	1	6	12.00
+31	22	6	5	10.00
+32	23	1	2	4.00
+33	23	3	3	6.00
+34	24	26	5	22.50
+35	25	20	53	132.50
+36	25	17	5	10.00
+37	26	31	15	75.00
+38	27	32	5	30.00
+39	28	31	2	10.00
+40	29	32	4	24.00
+41	30	4	5	10.00
+42	30	6	6	12.00
+43	31	20	6	15.00
+44	31	17	9	18.00
+45	32	32	5	30.00
+46	32	31	5	25.00
+47	33	1	6	12.00
+48	33	3	5	10.00
+49	34	1	5	10.00
+50	34	6	8	16.00
+51	35	4	5	10.00
+52	35	6	8	16.00
+53	36	15	8	6.00
+54	36	17	7	14.00
+55	37	30	8	16.00
+56	38	20	5	12.50
+57	38	19	5	10.00
+58	39	26	6	27.00
+59	40	32	5	30.00
+60	41	25	5	25.00
+61	42	32	8	48.00
+62	43	32	8	48.00
+63	44	32	8	48.00
+64	45	32	8	48.00
+65	46	32	8	48.00
+\.
+
+
+--
+-- TOC entry 4830 (class 0 OID 16655)
+-- Dependencies: 220
+-- Data for Name: eskaerak; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.eskaerak (id_eskaera, eskaera_data, guztira) FROM stdin;
+1	2024-12-16 20:47:03.106024	48.00
+2	2024-12-16 20:50:13.074389	19.00
+3	2024-12-16 20:53:37.998569	21.00
+4	2024-12-18 08:10:30.975472	7.00
+10	2024-12-19 09:23:30.929309	12.00
+11	2024-12-19 09:37:10.336842	18.00
+12	2024-12-31 19:13:42.870238	16.00
+13	2024-12-31 19:16:34.035757	7.00
+14	2025-01-13 20:20:45.88311	25.00
+15	2025-01-13 20:20:47.774328	25.00
+16	2025-01-13 20:24:21.239606	57.00
+17	2025-01-13 20:31:15.848766	46.00
+18	2025-01-13 20:35:51.788942	69.00
+19	2025-01-13 20:40:15.423171	76.00
+20	2025-01-15 08:01:06.45574	51.00
+21	2025-01-15 08:07:38.646496	24.00
+22	2025-01-15 08:47:50.059636	22.00
+23	2025-01-15 08:51:27.478506	10.00
+24	2025-01-15 08:53:19.658248	34.00
+25	2025-01-15 08:54:40.187875	142.00
+26	2025-01-15 08:59:51.2944	82.00
+27	2025-01-15 09:06:26.228933	56.00
+28	2025-01-15 09:07:34.855723	26.00
+29	2025-01-15 09:12:00.230691	52.00
+30	2025-01-15 09:13:49.766901	22.00
+31	2025-01-15 09:19:01.344882	33.00
+32	2025-01-15 09:20:11.115049	55.00
+33	2025-01-15 09:21:36.386577	22.00
+34	2025-01-15 09:22:25.846539	26.00
+35	2025-01-15 09:22:55.042529	26.00
+36	2025-01-15 09:23:50.908716	20.00
+37	2025-01-15 09:25:43.691169	88.00
+38	2025-01-16 09:22:53.37741	44.00
+39	2025-01-16 20:27:17.063047	170.00
+40	2025-01-16 20:30:10.027617	65.00
+41	2025-01-19 18:49:16.189042	93.00
+42	2025-01-19 19:23:07.1731	83.00
+43	2025-01-19 19:23:11.304598	83.00
+44	2025-01-19 19:23:14.805353	83.00
+45	2025-01-19 19:23:14.886724	83.00
+46	2025-01-19 19:23:33.218759	83.00
+\.
+
+
+--
+-- TOC entry 4828 (class 0 OID 16636)
+-- Dependencies: 218
+-- Data for Name: kategoriak; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.kategoriak (id_kategoria, kategoria_izena) FROM stdin;
+1	Freskagarriak
+2	Ardoak
+3	Garagardoak
+4	Zukuak
+5	Kafeak
+6	Sagardoak
+7	Likoreak
+8	Konbinatuak
+\.
+
+
+--
+-- TOC entry 4834 (class 0 OID 16728)
+-- Dependencies: 224
+-- Data for Name: produktuak; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.produktuak (id_produktua, produktua_izena, prezioa, id_kategoria) FROM stdin;
+1	Cocacola	2	1
+2	Cocacola cero	2	1
+3	Kas limon	2	1
+4	Kas naranja	2	1
+5	Schweppes tonica	2.5	1
+6	Seven up	2	1
+12	Estrella Galicia	2.5	3
+13	Alhambra	3	3
+14	Keler	2.5	3
+15	Mosto Corto	0.75	4
+16	Mosto Largo	1.6	4
+17	Melocotón	2	4
+18	Piña	2	4
+19	Naranja	2	4
+20	Batido de chocolate (Cacaolat)	2.5	4
+21	Con leche	1.2	5
+22	Cortao	1.5	5
+23	Colacao	1.6	5
+24	Leche fría	1.2	5
+25	Bereziartua	5	6
+26	Eula	4.5	6
+27	Licor de cafe	1.6	7
+28	Crema de Orujo	1.5	7
+29	Licor de hiervas	1.5	7
+30	Chupitos	2	7
+31	Cubatas	5	8
+32	Cubata + Redbull	6	8
+7	Muga - Rioja	4	2
+8	Campillo - Rioja	2.5	2
+9	Cigales - Rosado	1.6	2
+10	Rueda - Blanco	2	2
+11	Txakoli - Blanco	2	2
+33	Cordovin - Rosado	1.6	2
+\.
+
+
+--
+-- TOC entry 4836 (class 0 OID 24769)
+-- Dependencies: 226
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id, username, password) FROM stdin;
+16	nistal	123
+17	Silvia	123
+21	iker	123
+22	niistal	Admin123
+29	Iker	123
+30	iker1	123
+31	iker2	123
+32	iker3	123
+33	silvia1	123
+34	iker4	123
+\.
+
+
+--
+-- TOC entry 4847 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: eskaera_xehetasunak_id_xehetasuna_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.eskaera_xehetasunak_id_xehetasuna_seq', 65, true);
+
+
+--
+-- TOC entry 4848 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: eskaerak_id_eskaera_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.eskaerak_id_eskaera_seq', 46, true);
+
+
+--
+-- TOC entry 4849 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: kategoriak_id_kategoria_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.kategoriak_id_kategoria_seq', 8, true);
+
+
+--
+-- TOC entry 4850 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: produktuak_id_produktua_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.produktuak_id_produktua_seq', 32, true);
+
+
+--
+-- TOC entry 4851 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 34, true);
+
+
+--
+-- TOC entry 4672 (class 2606 OID 16668)
+-- Name: eskaera_xehetasunak eskaera_xehetasunak_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.eskaera_xehetasunak
+    ADD CONSTRAINT eskaera_xehetasunak_pkey PRIMARY KEY (id_xehetasuna);
+
+
+--
+-- TOC entry 4670 (class 2606 OID 16661)
+-- Name: eskaerak eskaerak_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.eskaerak
+    ADD CONSTRAINT eskaerak_pkey PRIMARY KEY (id_eskaera);
+
+
+--
+-- TOC entry 4668 (class 2606 OID 16641)
+-- Name: kategoriak kategoriak_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.kategoriak
+    ADD CONSTRAINT kategoriak_pkey PRIMARY KEY (id_kategoria);
+
+
+--
+-- TOC entry 4674 (class 2606 OID 16733)
+-- Name: produktuak produktuak_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.produktuak
+    ADD CONSTRAINT produktuak_pkey PRIMARY KEY (id_produktua);
+
+
+--
+-- TOC entry 4676 (class 2606 OID 24774)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4678 (class 2606 OID 24776)
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- TOC entry 4679 (class 2606 OID 16669)
+-- Name: eskaera_xehetasunak eskaera_xehetasunak_id_eskaera_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.eskaera_xehetasunak
+    ADD CONSTRAINT eskaera_xehetasunak_id_eskaera_fkey FOREIGN KEY (id_eskaera) REFERENCES public.eskaerak(id_eskaera);
+
+
+--
+-- TOC entry 4680 (class 2606 OID 24756)
+-- Name: eskaera_xehetasunak eskaera_xehetasunak_id_prod_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.eskaera_xehetasunak
+    ADD CONSTRAINT eskaera_xehetasunak_id_prod_fkey FOREIGN KEY (id_produktua) REFERENCES public.produktuak(id_produktua) NOT VALID;
+
+
+--
+-- TOC entry 4681 (class 2606 OID 16734)
+-- Name: produktuak produktuak_id_kategoria_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.produktuak
+    ADD CONSTRAINT produktuak_id_kategoria_fkey FOREIGN KEY (id_kategoria) REFERENCES public.kategoriak(id_kategoria);
+
+
+-- Completed on 2025-01-20 18:02:05
+
+--
+-- PostgreSQL database dump complete
+--
+
